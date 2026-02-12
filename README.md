@@ -12,7 +12,7 @@
 
 <br />
 
-Sift syncs with Canvas, Google Calendar, Gmail, and more to give students one AI assistant that knows their assignments, deadlines, events, and emails — and helps them plan around all of it through natural conversation.
+Sift connects to Canvas, Google Calendar, Gmail, Slack, Notion, and more — giving students and professionals one AI assistant that tracks everything and helps them plan around it through natural conversation.
 
 No tab-switching. No manual entry. Just text Sift what you need.
 
@@ -21,7 +21,7 @@ No tab-switching. No manual entry. Just text Sift what you need.
 - **Syncs your academic life** — Canvas assignments, calendar events, Gmail, and more stay up to date automatically in the background.
 - **Plans your day** — generates time-blocked schedules around your classes, deadlines, and preferences.
 - **Works where you are** — chat on the web, over iMessage, or via SMS. Same AI, same context, every channel.
-- **Remembers you** — learns your habits, preferences, and patterns so suggestions improve over time.
+- **Remembers you** — learns your commitments, interests, habits, preferences, and goals so suggestions improve over time.
 - **Automates the boring stuff** — daily briefings, deadline reminders, email triage, and smart notifications you can set up in plain English.
 - **Manages your tasks** — create, prioritize, and track todos alongside Canvas assignments in one place.
 
@@ -67,7 +67,7 @@ Web App (React 19)  ·  iOS App (Expo)  ·  iMessage  ·  SMS
 | | |
 |---|---|
 | **Backend** | Python, FastAPI, 26 API routers, 40+ services, 24 repository domains |
-| **AI** | Claude (Anthropic), GPT-4.1-mini (OpenAI), Gemini 2.5 Flash (Google) |
+| **AI** | LangChain, multi-agent orchestration, pgvector semantic search, 3-tier classification pipeline |
 | **Database** | Supabase (PostgreSQL + pgvector + Row Level Security + Auth) |
 | **Cache** | Redis (Upstash) — caching, distributed locks, message queues, rate limiting |
 | **Web** | React 19, Vite, TypeScript, TailwindCSS, Radix UI, TanStack Query |
