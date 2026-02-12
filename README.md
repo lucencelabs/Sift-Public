@@ -1,112 +1,90 @@
 <div align="center">
-  <img src="https://www.pulseplan.app/assets/logo.png" alt="PulsePlan Logo" width="90px" />
-  <h1>PulsePlan – AI-Powered Scheduling Agent</h1>
+  <h1>Sift</h1>
+  <p><strong>A personal AI assistant for students — available over iMessage, SMS, and web.</strong></p>
+  <p>
+    <a href="https://app.usesift.app">App</a> &middot;
+    <a href="https://usesift.app">Website</a> &middot;
+    <a href="https://usesift.app/pricing">Pricing</a>
+  </p>
+  <br />
+  <img src="https://github.com/user-attachments/assets/56691739-33d5-44b2-83f6-ea68fb55e985" alt="Sift" width="175" />
 </div>
 
-PulsePlan is an intelligent planning assistant that helps students manage assignments, classes, calendars, and tasks. It integrates with platforms like Canvas, Google Calendar, and Microsoft Outlook, providing a clean, conversational interface for organizing academic life.
+<br />
 
-> Your personal AI scheduling companion.
+Sift syncs with Canvas, Google Calendar, Gmail, and more to give students one AI assistant that knows their assignments, deadlines, events, and emails — and helps them plan around all of it through natural conversation.
 
----
+No tab-switching. No manual entry. Just text Sift what you need.
 
-## ✨ Key Features
+## What It Does
 
-### 🤖 AI-Powered Assistance
+- **Syncs your academic life** — Canvas assignments, calendar events, Gmail, and more stay up to date automatically in the background.
+- **Plans your day** — generates time-blocked schedules around your classes, deadlines, and preferences.
+- **Works where you are** — chat on the web, over iMessage, or via SMS. Same AI, same context, every channel.
+- **Remembers you** — learns your habits, preferences, and patterns so suggestions improve over time.
+- **Automates the boring stuff** — daily briefings, deadline reminders, email triage, and smart notifications you can set up in plain English.
+- **Manages your tasks** — create, prioritize, and track todos alongside Canvas assignments in one place.
 
-* Conversational task and schedule management
-* Natural language understanding for academic and productivity queries
-* Smart clarifications and multi‑turn conversations
-
-### 📚 Academic Integration
-
-* Canvas LMS sync for assignments and due dates
-* Course organization and academic dashboard
-
-### 📅 Smart Scheduling
-
-* AI‑generated time‑blocking suggestions
-* Conflict‑aware planning that adapts to calendar changes
-
-### 💡 Productivity Tools
-
-* Daily briefings summarizing tasks and events
-* Weekly Pulse insights showing workload and productivity trends
-* Built‑in Pomodoro focus timer
-
-### 🔧 Platform Features
-
-* Real‑time updates for tasks and calendar events
-* Cross‑platform experience (Web + Mobile)
-* Secure authentication and data protection
-
----
-
-## 🏗️ High‑Level Architecture
-
-PulsePlan is built on a modular, scalable architecture:
-
-* **Backend:** Python FastAPI service with workflow‑based request handling
-* **AI Layer:** Conversational agent and language understanding system
-* **Frontend:** React web app with a modern, responsive interface
-* **Mobile:** React Native app for on‑the‑go task management
-* **Database:** PostgreSQL with secure authentication
-* **Caching:** Redis for real‑time performance
-* **Integrations:** Calendar providers, Canvas LMS, and email services
-
----
-
-## 🗺️ Project Structure (Public Overview)
+## Architecture
 
 ```
-pulseplan-public/
-├── backend-overview.md        # High‑level backend explanation
-├── frontend-overview.md       # Web architecture summary
-├── mobile-overview.md         # Mobile structure overview
-├── architecture-diagram.png   # High‑level system diagram
-├── screenshots/               # Product screenshots
-└── README.md                  # Public documentation
+Web App (React 19)  ·  iOS App (Expo)  ·  iMessage  ·  SMS
+                          │
+                    FastAPI Backend
+                          │
+              ┌───────────┼───────────┐
+              │           │           │
+        Orchestrator   Workers    Middleware
+        Agent (LLM)   (18 jobs)  (7 layers)
+              │
+        10 Sub-Agents
+        100+ Tools
+              │
+    ┌─────────┼─────────┐
+    │         │         │
+ Supabase   Redis    External
+ (Postgres  (Cache,  (Canvas, Google,
+  pgvector, Locks,   Gemini, Notion,
+  Auth)     Queues)  Slack, SignalWire)
 ```
 
----
+### Highlights
 
-## 🔠 Tech Stack
+**Hierarchical agent system** — A central orchestrator delegates to 10 specialized sub-agents (scheduling, email, memory, notes, tasks, etc.), each with isolated tool access. 100+ tools auto-registered at class definition time. Mid-processing message injection via Redis-backed steer signals lets users redirect the agent while it's still thinking.
 
-| Layer            | Technology                            |
-| ---------------- | ------------------------------------- |
-| **AI Layer**     | Conversational agent + NLU models     |
-| **Backend**      | FastAPI, Python, Pydantic, asyncio    |
-| **Frontend**     | React, TypeScript, Vite, Tailwind CSS |
-| **Mobile**       | React Native, Expo                    |
-| **Database**     | PostgreSQL (Supabase)                 |
-| **Caching**      | Redis                                 |
-| **Integrations** | Canvas LMS, Google Calendar, Outlook  |
-| **Auth**         | Supabase Auth, OAuth2                 |
-| **Deployment**   | Docker, containerized environments    |
-| **Analytics**    | PostHog                               |
+**Native iMessage relay** — A custom Mac Mini HTTP relay (not a third-party wrapper) enables full bidirectional iMessage: chunked streaming with natural pacing, Gemini Vision for photo attachments, tapback reactions, per-user privacy isolation in group chats, and automatic SMS fallback via SignalWire.
 
----
+**3-tier classifier** — Every inbound signal (email, calendar event, Canvas update) passes through a progressive classifier: keyword hash (~1ms) → embedding similarity via pgvector (~10ms) → Gemini Flash LLM (~500ms). Results above 0.80 confidence feed back into the cache, so repeated patterns get faster over time.
 
-## 📸 Screenshots
+**18 background workers** — APScheduler jobs with Redis distributed locking, exponential backoff, and timeout enforcement. Handles calendar sync (down to 30s intervals), Canvas polling, reminder firing (~10s latency), entity graph decay, weather, email watch renewals, and more.
 
-Screenshots coming soon.
+**Real-time streaming UI** — Token-by-token chat rendering with `requestAnimationFrame` buffering at 60fps. 22 message types (schedule drafts, email drafts, thinking blocks, workflow progress) rendered via polymorphic components. Socket.IO with offline buffering and 15-attempt exponential reconnection.
 
----
+**Security stack** — 7 middleware layers including hierarchical rate limiting (4-level sliding window), Redis-backed idempotency, and request size gating. AES-256-GCM token encryption with PBKDF2 key derivation. Supabase Auth with row-level security on all tables.
 
-## 📚 Documentation
+## Tech Stack
 
-This public repo includes:
+| | |
+|---|---|
+| **Backend** | Python, FastAPI, 26 API routers, 40+ services, 24 repository domains |
+| **AI** | Claude (Anthropic), GPT-4.1-mini (OpenAI), Gemini 2.5 Flash (Google) |
+| **Database** | Supabase (PostgreSQL + pgvector + Row Level Security + Auth) |
+| **Cache** | Redis (Upstash) — caching, distributed locks, message queues, rate limiting |
+| **Web** | React 19, Vite, TypeScript, TailwindCSS, Radix UI, TanStack Query |
+| **Real-time** | Socket.IO with offline buffering and batched reconnection delivery |
+| **Infra** | Fly.io (backend), Vercel (web), Supabase Cloud, Upstash Redis |
 
-* **Backend Overview** – High‑level architecture and data flow
-* **Frontend Overview** – UI structure and component strategy
-* **Mobile Overview** – Navigation and app layout
-* **System Diagram** – Visual overview of PulsePlan’s ecosystem
+## Scale
 
----
+- ~240K lines Python backend, 192 React components, 84 custom hooks
+- 10 sub-agents, 100+ tools, 18 background workers
+- 4 channels (web, iMessage, SMS, automation) through a unified agent pipeline
+- 7 middleware layers, 9 notification channels, 9 entity graph types
 
-## 👥 About
+## About
 
-PulsePlan is built by **Fly on the Wall**, focusing on AI‑powered productivity tools.
+Built by **[Lucence Labs](https://lucence.so)**.
 
-* **Website:** [https://flyonthewall.xyz](https://flyonthewall.xyz)
-* **App:** [https://pulseplan.app](https://pulseplan.app)
-* **Contact:** [hello@flyonthewall.xyz](mailto:hello@flyonthewall.xyz)
+<div align="center">
+  <sub>Sift is closed-source. This repository is not accepting contributions.</sub>
+</div>
