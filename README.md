@@ -1,12 +1,12 @@
 <div align="center">
   <img src="https://github.com/user-attachments/assets/56691739-33d5-44b2-83f6-ea68fb55e985" alt="Sift" width="100" />
   <h1>Sift</h1>
-  <p><strong>A personal AI assistant for students — available over iMessage, SMS, and web.</strong></p>
+  <p><strong>A personal AI assistant for students and professionals — available over iMessage, SMS, and web.</strong></p>
+  <p>Text <strong>+1 (303) 994-9654</strong> to get started</p>
   <p>
     <a href="https://app.usesift.app">App</a> &middot;
     <a href="https://usesift.app">Website</a> &middot;
     <a href="https://usesift.app/pricing">Pricing</a>
-  </p>
   <br />
 </div>
 
