@@ -86,5 +86,5 @@ Web App (React 19)  ·  iOS App (Expo)  ·  iMessage  ·  SMS
 Built by **[Lucence Labs](https://lucence.so)**.
 
 <div align="center">
-  <sub>Sift is closed-source. This repository is not accepting contributions.</sub>
+  <sub>Sift is closed-source. Source code available upon request for recruiting purposes — conner@connergroth.com</sub>
 </div>
